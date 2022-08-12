@@ -1,10 +1,11 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -21,6 +22,26 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
 
+// аутентификация
+Route::name('user.')->group(function (){
+    Route::get('/login', [LoginController::class, 'index'])->name('login');
+    Route::get('/registration', [RegistrationController::class, 'index'])->name('registration');
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/registration', [RegistrationController::class, 'register']);
+
+    Route::get('/logout', function (){
+        Auth::logout();
+        return redirect('/');
+    })->name('logout');
+});
+
+// профиль
+Route::name('profile.')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('index');
+    Route::patch('/update_photo', [ProfileController::class, 'update_photo'])->name('update_photo');
+    Route::delete('/delete_user/{id}', [AdminController::class, 'delete'])->name('delete');
+});
+
 // админ панель / пользователи
 Route::name('admin.')->group(function () {
     Route::get('/admin-panel', [AdminController::class, 'show'])
@@ -34,34 +55,3 @@ Route::name('admin.')->group(function () {
     Route::delete('/delete_user/{id}', [AdminController::class, 'delete'])->name('delete');
 });
 
-Route::name('user.')->group(function (){
-    Route::get('/login', function (){
-        if(Auth::check()){
-            return view('profile');
-        }
-        return view('auth.login');
-    })->name('login');
-
-    Route::get('/registration', function (){
-        if(Auth::check()){
-            return view('profile');
-        }
-        return view('auth.registration');
-    })->name('registration');
-
-    Route::get('/logout', function (){
-        Auth::logout();
-        return redirect('/');
-    })->name('logout');
-
-    Route::get('/profile', function (){
-        if(Auth::check()){
-            $posts = User::find(Auth::id())->posts;
-            return view('profile', ['posts' => $posts]);
-        }
-        return view('auth.login');
-    })->name('profile');
-
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/registration', [AuthController::class, 'register']);
-});
