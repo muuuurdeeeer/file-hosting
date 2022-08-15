@@ -29,11 +29,11 @@ class AdminController extends Controller
         $user = User::create($validated);
 
         if($user){
-            return redirect(route('admin.show'));
+            return to_route('admin.show');
         }
 
         return redirect(route('admin.show'))->withErrors([
-            'При добалвении пользователя произошла ошибка'
+            'При добавлении пользователя произошла ошибка'
         ]);
     }
 
@@ -53,16 +53,17 @@ class AdminController extends Controller
         }
 
         User::findOrFail($id)->update($validated);
-        return redirect(route('admin.show'));
+        return to_route('admin.show');
     }
 
     public function delete($id) {
        User::destroy($id);
-       return redirect(route('admin.show'));
+       //return redirect(route('admin.show'));
+        return to_route('admin.show');
     }
 
     public function recovery($id) {
         User::onlyTrashed()->where('id', $id)->restore();
-        return redirect(route('admin.show'));
+        return to_route('admin.show');
     }
 }

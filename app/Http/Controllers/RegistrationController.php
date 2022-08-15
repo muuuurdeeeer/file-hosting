@@ -26,7 +26,7 @@ class RegistrationController extends Controller
         $user = User::create($validated);
 
         if($user){
-            return redirect(route('user.login'));
+            return to_route('user.login');
         }
 
         return redirect(route('user.registration'))->withErrors([

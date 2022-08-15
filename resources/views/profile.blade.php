@@ -23,6 +23,19 @@
                     </div>
                     <br>
                     <p><a class="btn btn-secondary btn-lg"  href="{{ 'logout' }}" role="button">Выйти &raquo;</a></p>
+
+                        <form class="form-control" action="{{ route('file.upload') }}" method="POST" enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            Название файла:
+                            <br>
+                            <input type="text" name="title">
+                            <br><br>
+                            Файл:
+                            <br>
+                            <input type="file" name="upload_file">
+                            <br><br>
+                            <input type="submit" value="Загрузить">
+                        </form>
                 </div>
             </div>
             <div class="container">

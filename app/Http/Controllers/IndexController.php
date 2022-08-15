@@ -10,7 +10,7 @@ class IndexController extends Controller
 {
     public function index() {
         if(Auth::check()){
-            return redirect(route('profile.index'));
+            return to_route('profile.index');
         }
         return view('index');
     }

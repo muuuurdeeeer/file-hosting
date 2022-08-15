@@ -14,6 +14,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
     protected $dates = ['deleted_at'];
 
     /**

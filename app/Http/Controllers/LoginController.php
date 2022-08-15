@@ -9,7 +9,7 @@ class LoginController extends Controller
 {
     public function index() {
         if(Auth::check()){
-            return redirect(route('profile.index'));
+            return to_route('profile.index');
         }
         return view('auth.login');
     }
@@ -23,12 +23,17 @@ class LoginController extends Controller
 
         if(Auth::attempt($credentials)){
             if (Auth::check()) {
-                return redirect(route('profile.index'));
+                return to_route('profile.index');
             }
         }
 
-        return redirect(route('user.login'))->withErrors([
+        return to_route('user.login')->withErrors([
             'Не удалось войти'
         ]);
+    }
+
+    public function logout() {
+        Auth::logout();
+        return to_route('index');
     }
 }

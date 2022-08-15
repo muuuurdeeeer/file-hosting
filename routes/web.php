@@ -6,7 +6,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegistrationController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\FileController;
 
 
 /*
@@ -28,11 +28,7 @@ Route::name('user.')->group(function (){
     Route::get('/registration', [RegistrationController::class, 'index'])->name('registration');
     Route::post('/login', [LoginController::class, 'login']);
     Route::post('/registration', [RegistrationController::class, 'register']);
-
-    Route::get('/logout', function (){
-        Auth::logout();
-        return redirect('/');
-    })->name('logout');
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
 // профиль
@@ -41,6 +37,12 @@ Route::name('profile.')->group(function () {
     Route::patch('/update_photo', [ProfileController::class, 'update_photo'])->name('update_photo');
     Route::delete('/delete_user/{id}', [AdminController::class, 'delete'])->name('delete');
 });
+
+// работа с файлами
+Route::name('file.')->group(function (){
+    Route::post('/upload_file', [FileController::class, 'upload'])->name('upload');
+});
+
 
 // админ панель / пользователи
 Route::name('admin.')->group(function () {
