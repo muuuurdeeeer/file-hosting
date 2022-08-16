@@ -10,8 +10,6 @@ use App\Models\File;
 class FileController extends Controller
 {
     public function upload(Request $request) {
-        //$request->file('crab')->store('user_files');
-
         $user = Auth::id();
         $name = Storage::putFile('user_files', $request->file('upload_file'));
 
@@ -21,5 +19,15 @@ class FileController extends Controller
         ];
 
         File::create($data);
+    }
+
+    public function download($id) {
+        $path = File::find($id)->name;
+        return Storage::download($path);
+    }
+
+    public function delete($id) {
+        File::destroy($id);
+        return to_route('profile.index');
     }
 }

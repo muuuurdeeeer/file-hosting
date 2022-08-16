@@ -58,8 +58,7 @@ class AdminController extends Controller
 
     public function delete($id) {
        User::destroy($id);
-       //return redirect(route('admin.show'));
-        return to_route('admin.show');
+       return to_route('admin.show');
     }
 
     public function recovery($id) {

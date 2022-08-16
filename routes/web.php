@@ -41,6 +41,8 @@ Route::name('profile.')->group(function () {
 // работа с файлами
 Route::name('file.')->group(function (){
     Route::post('/upload_file', [FileController::class, 'upload'])->name('upload');
+    Route::post('/download_file/{id}', [FileController::class, 'download'])->name('download');
+    Route::delete('/delete_file/{id}', [FileController::class, 'delete'])->name('delete');
 });
 
 

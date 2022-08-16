@@ -26,11 +26,7 @@
 
                         <form class="form-control" action="{{ route('file.upload') }}" method="POST" enctype="multipart/form-data">
                             {{ csrf_field() }}
-                            Название файла:
-                            <br>
-                            <input type="text" name="title">
-                            <br><br>
-                            Файл:
+                            Выберите файл:
                             <br>
                             <input type="file" name="upload_file">
                             <br><br>
@@ -42,6 +38,26 @@
                 <p style="font-size: 35px">Мои файлы</p>
             </div>
         </div>
+
+        @foreach($files as $file)
+            <div class="card col-6 offset-3 text-dark bg-light mb-3" >
+                <div class="card-body">
+                    <h5 class="card-title"> {{ $file->name }} </h5>
+                    <p class="card-text"> {{ $file->created_at->format('d/m/Y') }} {{ $file->created_at->format('H:i') }}</p>
+                </div>
+                <form method="post" class="download_file" action="{{ url('/download_file',$file->id) }}">
+                    {{  csrf_field() }}
+                    <button type="submit" class="btn btn-success">{{ trans('Скачать') }}</button>
+                </form>
+                <form method="post" class="delete_file" action="{{ url('/delete_file',$file->id) }}">
+                    {{ method_field('DELETE') }}
+                    {{  csrf_field() }}
+                    <button type="submit" class="btn btn-danger">{{ trans('Удалить') }}</button>
+                </form>
+            </div>
+        @endforeach
+        {{ $files->links() }}
+
     </main>
 
 @endsection
